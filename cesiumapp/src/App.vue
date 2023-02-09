@@ -69,10 +69,7 @@ onMounted(()=>{
       //聚焦飛機
       viewer.trackedEntity = entity;
     }  
-    viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function (e) {
-      e.cancel = true;
-      slideFly();
-    });
+    
 });
 
     
