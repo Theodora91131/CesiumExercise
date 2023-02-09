@@ -27,12 +27,9 @@ onMounted(()=>{
   iframe.setAttribute("src","");
   // 加载3D tileset
   var tileset_url = "";
-    // 错误的路径
-    // tileset_url = "/Apps/SampleData/Cesium3DTiles/Tilesets/Tileset/";
-    // 正确的路径
+   
     tileset_url = "node_modules/Apps/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json";;
 //tileset_url = "http://localhost:8080/Apps/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json";
-    // 跨域问题
   const  tileset = new Cesium.Cesium3DTileset({ url: tileset_url });
   tileset.readyPromise.then(function (tileset) {
       // 添加tileset到viewer
@@ -44,11 +41,35 @@ onMounted(()=>{
       viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function (e) {
         e.cancel = true;
         viewer.zoomTo(tileset, default_HeadingPitchRange);
-      }).otherwise(function (error) {
-      console.log(error);
       });
     });
+    var glbUrl = "node_modules/Apps/SampleData/models/CesiumAir/Cesium_Air.glb";
+    // 加载glb飞机
+    createModel(glbUrl, 5000.0);
+    // 飞机
+    function createModel(url, height) {
+      viewer.entities.removeAll();
+      var position = Cesium.Cartesian3.fromDegrees(116.39, 39.93, 60);
+      var heading = Cesium.Math.toRadians(135);
+      var pitch = 0;
+      var roll = 0;
+      var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+      var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+      var entity = viewer.entities.add({
+        name: url,
+        position: position,
+        orientation: orientation,
+        model: {
+          uri: url,
+          minimumPixelSize: 128,
+          maximumScale: 20000
+        }
+      });
+      viewer.trackedEntity = entity;
+    }  
 });
+
+    
 </script>
 
 <template>
