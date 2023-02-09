@@ -44,9 +44,9 @@ onMounted(()=>{
       });
     });
     var glbUrl = "node_modules/Apps/SampleData/models/CesiumAir/Cesium_Air.glb";
-    // 加载glb飞机
+    // 加载glb飛機
     createModel(glbUrl, 5000.0);
-    // 飞机
+    // 飛機
     function createModel(url, height) {
       viewer.entities.removeAll();
       var position = Cesium.Cartesian3.fromDegrees(116.39, 39.93, 60);
@@ -55,6 +55,7 @@ onMounted(()=>{
       var roll = 0;
       var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
       var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+      //新增實體模型
       var entity = viewer.entities.add({
         name: url,
         position: position,
@@ -65,8 +66,13 @@ onMounted(()=>{
           maximumScale: 20000
         }
       });
+      //聚焦飛機
       viewer.trackedEntity = entity;
     }  
+    viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function (e) {
+      e.cancel = true;
+      slideFly();
+    });
 });
 
     
