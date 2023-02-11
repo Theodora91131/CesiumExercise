@@ -23,6 +23,11 @@ onMounted(()=>{
     "allow-same-origin allow-scripts allow-popups allow-forms"
   );
   iframe.setAttribute("src","");
+  // remove default base layer
+  viewer.imageryLayers.remove(viewer.imageryLayers.get(0))
+  //add Sentinel-2 imagery
+  viewer.imageryLayers.addImageryProvider(new Cesium.IonImageryProvider({assetId : 3954}));
+  
 });
 
     
