@@ -27,7 +27,13 @@ onMounted(()=>{
   viewer.imageryLayers.remove(viewer.imageryLayers.get(0))
   //add Sentinel-2 imagery
   viewer.imageryLayers.addImageryProvider(new Cesium.IonImageryProvider({assetId : 3954}));
-  
+  // Load Cesium World Terrain
+  viewer.terrainProvider = Cesium.createWorldTerrain({
+    requestWaterMask: true, // required for water effects
+    requestVertexNormals: true // required for terrain lighting
+  })
+  // Enable depth testing so things behind the terrain disappear
+  viewer.scene.globe.depthTestAgainstTerrain = true;
 });
 
     
