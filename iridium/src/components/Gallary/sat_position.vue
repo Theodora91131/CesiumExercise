@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import * as cmap from "../../core/map.ts";
-import { clearInterval } from "timers";
-// import {  Viewer, Entity } from "cesium";
+import {  Viewer, Entity } from "cesium";
+import { Point } from "../../core/sat_position.ts"
+let point: Point;
 // import * as Cesium from "cesium";
 // import { Point } from "../../core/sat_position";
 // let latLonObjResults  = latLonObjResults ;
@@ -17,28 +18,32 @@ import { clearInterval } from "timers";
 //});
     
 //  console.log("11111111111111111111111111111111111111111111111");
-// const entity = new Entity({
-//   id: "sat_position_cesium",
-  
-// });
+
 // if (!point) point = viewer.entities.add(new Point());
 //viewer.entities.add(entity);
-
-onMounted(()=>{
-  const intl = setInterval(()=>{
-    try{
-      const viewer = cmap.getViewer();
-      clearInterval(intl);
-      console.log(viewer);
-    }
-    catch{
-
-    }
-
-  },1000);
+const main = (viewer:Viewer)=>{
+  point ??= viewer.entities.add(new Point());
   
+  point.show = show;
+  console.log(point)
+    
+    
+});
+}
+onMounted(()=>{
+  const intl = setInterval(() => {
+    try {
+      // console.log('Here')
+      const viewer = cmap.getViewer();
+      main(viewer)
+      clearInterval(intl);
 
-});   
+    } catch {
+    }
+  }, 1000)
+
+});
+   
 </script>
 
 <template>
