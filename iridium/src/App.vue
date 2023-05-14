@@ -1,54 +1,10 @@
 <script setup lang="ts">
-import {  Viewer } from "cesium";
-import { onMounted  } from "vue";
-import * as Cesium from "cesium";
-//import { TilesRenderer } from '3d-tiles-renderer';
-//import * as Cesium from 'cesium/Source/Cesium.js'
-import "cesium/Build/Cesium/Widgets/widgets.css";
-//import Cesium from 'cesium/Source/Cesium.js';
-//import "cesium/Build/Cesium/Cesium.js"
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkM2M0ZWNjZS01NmEzLTQ5ZTMtYjUzNy01MzA1NmU0N2ViMDUiLCJpZCI6MTIzNTMzLCJpYXQiOjE2NzU2NjcyNDh9.qbOehB4ZSe8qL8XrnfaMQ8jD8_i0MjU494IPRwdru-0';
-onMounted(()=>{
-  const viewer = new Viewer("cesiumContainer",{
-    geocoder:true ,
-    homeButton:true,
-    sceneModePicker:true,
-    baseLayerPicker:true,
-    navigationHelpButton:true,
-    animation:true,
-    fullscreenButton:true
-  });
-  // sandbox權限
-  var iframe = document.getElementsByClassName("cesium-infoBox-iframe")[0];
-  iframe.setAttribute(
-    "sandbox",
-    "allow-same-origin allow-scripts allow-popups allow-forms"
-  );
-  iframe.setAttribute("src","");
-  
-    
-    
-      var entity = viewer.entities.add({
-       
-      });
-      
-});  
-    
-
-
-    
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import CesumWorld from './components/CesiumWorld.vue'
 </script>
 
 <template>
-  <div id="cesiumContainer"></div>
-  
+  <CesumWorld />
 </template>
 
-<style scoped>
-#cesiumContainer{
-  width:100%;
-  height:100%;
-  position:absolute;
- 
-}
-</style>
