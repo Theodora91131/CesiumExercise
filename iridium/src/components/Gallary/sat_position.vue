@@ -1,36 +1,34 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import * as cmap from "../../core/map.ts";
-import {  Viewer, Entity } from "cesium";
+import * as Cesium from "cesium";
 import { Point } from "../../core/sat_position.ts"
-let point: Point;
-// import * as Cesium from "cesium";
-// import { Point } from "../../core/sat_position";
-// let latLonObjResults  = latLonObjResults ;
-//const viewer = new Cesium.Viewer("cesiumContainer");
-//const entity = viewer.entities.add({
-//  position: Cesium.Cartesian3.fromDegrees(-103.0, 40.0),
-//  ellipse: {
-//    semiMinorAxis: 250000.0,
-//    semiMajorAxis: 400000.0,
-//    material: Cesium.Color.BLUE.withAlpha(0.5),
-//  },
-//});
-    
-//  console.log("11111111111111111111111111111111111111111111111");
 
-// if (!point) point = viewer.entities.add(new Point());
-//viewer.entities.add(entity);
-const main = (viewer:Viewer)=>{
-  point ??= viewer.entities.add(new Point());
-  
-  point.show = show;
-  console.log(point)
-    
-    
-});
+
+console.log("11111111111111111111111111111111111111111111111");
+
+
+const main = (viewer: Cesium.Viewer) => {
+
+  const entities: Cesium.Entity[] = [];
+
+  const point = new Point();
+  const latLonObjResults = point.getLatLngObjects();
+
+  for (const latLonObj of latLonObjResults) {
+    const entity = viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(latLonObj.lng, latLonObj.lat),
+      point: {
+        pixelSize: 10,
+        color: Cesium.Color.YELLOW,
+      },
+    });
+    entities.push(entity);
+  }
+
+  viewer.zoomTo(entities);
 }
-onMounted(()=>{
+onMounted(() => {
   const intl = setInterval(() => {
     try {
       // console.log('Here')
@@ -38,19 +36,17 @@ onMounted(()=>{
       main(viewer)
       clearInterval(intl);
 
-    } catch {
+    } catch(e) {
+      console.log(e);
     }
   }, 1000)
 
 });
-   
+
 </script>
 
 <template>
   <!-- <div id="cesiumContainer"></div> -->
- 
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
