@@ -4,10 +4,6 @@ import * as cmap from "../../core/map.ts";
 import * as Cesium from "cesium";
 import { Point } from "../../core/sat_position.ts"
 
-
-console.log("11111111111111111111111111111111111111111111111");
-
-
 const main = (viewer: Cesium.Viewer) => {
 
   const entities: Cesium.Entity[] = [];
