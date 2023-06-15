@@ -1,3 +1,87 @@
+import { MongoClient } from 'mongodb';
+import fetch from 'node-fetch';
+
+const mongoUrl = 'mongodb://localhost:27017';
+const dbName = 'Satellite';
+const collectionName = 'SatellitePosition';
+
+async function insertTLEData() {
+  try {
+    const response = await fetch("https://celestrak.org/NORAD/elements/gp.php?GROUP=iridium&FORMAT=tle");
+    const data = await response.text();
+    console.log("a55555555555555555555555555")
+    const client = new MongoClient(mongoUrl);
+    await client.connect();
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
+    await collection.insertOne({ raw: data });
+
+    client.close();
+  } catch (error) {
+   
+  }
+}
+
+insertTLEData();
+
+// import { MongoClient, MongoError } from 'mongodb';
+// //const { MongoClient } = require('mongodb');
+
+//   // MongoDB 連線 URL
+// const mongoUrl = 'mongodb://localhost:27017';
+
+// const dbName = 'Satellite';
+// const collectionName = 'SatellitePosition';
+
+// fetch("https://celestrak.org/NORAD/elements/gp.php?GROUP=iridium&FORMAT=tle")
+// .then(response => response.text())
+//   .then(data => {
+//    MongoClient.connect(mongoUrl, (error, client) {
+//       if (error) {
+//         console.error('無法連線到 MongoDB:', error);
+//         return;
+//       }else{
+
+//       console.log('成功連線到 MongoDB');
+
+//       const db = client.db(dbName);
+//       const collection = db.collection(collectionName);
+//       collection.insertOne({ data: data }, (error, result) => {
+//         if (error) {
+//           console.error('資料插入錯誤:', error);
+//         } else {
+//           console.log('資料插入成功:', result);
+//         }
+//         // 關閉連線
+//         client.close();
+
+//       }  
+//       });
+//     });
+
+
+//     const db = MongoClient.db(dbName);
+//     const collection = db.collection(collectionName);
+
+//     // 插入資料
+//     collection.insertMany(data, (error, result) => {
+//       if (error) {
+//         console.error('無法插入資料:', error);
+//         return;
+//       }
+
+//       console.log('成功插入資料:', result.insertedCount);
+
+//       // 關閉連線
+//       client.close();
+//     });
+//   });
+// })
+// .catch(error => {
+//   console.error('下載資料時發生錯誤:', error);
+// });
+
+
 const tleString = `
 IRIDIUM 7 [-]           
 1 24793U 97020B   23134.11347401  .00000508  00000+0  17227-3 0  9991
@@ -94,11 +178,11 @@ IRIDIUM 2 [-]
 2 25527  85.5229 179.4540 0005105   6.3335 353.7978 15.34404503348742
 `;
 const chunkArray = <T>(array: T[], chunkSize: number): T[][] => {
-    return Array.from({ length: Math.ceil(array.length / chunkSize) }, (_, index) =>
-      array.slice(index * chunkSize, index * chunkSize + chunkSize)
-    )
-  }
-  
-const tleData = chunkArray<string>(tleString.split('\n').filter(v => v), 3).map(v=>v.join('\n'))
+  return Array.from({ length: Math.ceil(array.length / chunkSize) }, (_, index) =>
+    array.slice(index * chunkSize, index * chunkSize + chunkSize)
+  )
+}
 
-export  { tleData };
+const tleData = chunkArray<string>(tleString.split('\n').filter(v => v), 3).map(v => v.join('\n'))
+
+export { tleData };
